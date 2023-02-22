@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { DeleteRecipe, ShowRecipe } from "../axios/recipe.axios";
 import { Button } from "@mui/material";
+import {Image} from "cloudinary-react"
 
 const Card = ({ setIsPopup, setRecipe }) => {
   const [recipes, setRecipes] = useState([]);
@@ -38,11 +39,12 @@ const Card = ({ setIsPopup, setRecipe }) => {
           ? recipes.map((recipe) => {
               return (
                 <div className=" lg:w-[80%] w-[70%] flex flex-col justify-center items-start bg-[#F8F0E3] shadow-md lg:px-8 rounded-md lg:m-2.5 ml-7 p-3 my-2">
-                  <img
-                    src="https://burst.shopifycdn.com/photos/flatlay-iron-skillet-with-meat-and-other-food.jpg?width=1200&format=pjpg&exif=1&iptc=1"
-                    alt=""
+                  <Image
                     className="object-contain w-[400px] h-[300px]"
+                    cloudName="dxll1lfir"
+                    publicId= {recipe.blog_img}
                   />
+
                   <h1 className="font-semibold text-xl py-2">
                     {recipe.blog_title}
                   </h1>

@@ -1,15 +1,35 @@
-import React from "react";
-import Navbar from "../components/navbar.component";
+import Card from "../components/card.component";
 import Footer from "../components/footer.component";
+import Navbar from "../components/navbar.component";
+import Popup from "../components/popup.component";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const Feedpage = () => {
+  const [isPopup, setIsPopup] = useState(false);
+  const [recipe, setRecipe] = useState();
+
+  const { user } = useSelector((state) => ({ ...state }));
+
   return (
-    <div className="bg-gradient-to-r from-[#090D0C] via-[#0A1312] to-[#0E2020] min-h-screen">
-      <Navbar />
-      <div className=" pt-[10vh]"></div>
-      <Footer />
-    </div>
+    <>
+      {isPopup && <Popup recipe={recipe} />}
+
+      <div className=" bg-gradient-to-r from-[#090D0C] via-[#0A1312] to-[#0E2020] min-h-screen">
+        <Navbar />
+        {/* <h1 className="text-white text-4xl flex flex-col justify-start items-center pt-7">
+          Welcome {user.displayName}
+        </h1> */}
+        {/* <p className="text-white text-lg flex flex-col justify-start p-3">
+          Your recipes
+        </p> */}
+
+        <Card setIsPopup={setIsPopup} setRecipe={setRecipe} />
+
+        <Footer />
+      </div>
+    </>
   );
 };
 
-export default Feedpage
+export default Feedpage;
