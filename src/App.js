@@ -4,7 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import './App.css';
 import Signup from './pages/auth/signup';
 import Homepage from './pages/home.page';
-// import Accountpage from './pages/account.page';
+import Accountpage from './pages/account.page';
 import Addrecipe from './pages/addrecipe.page';
 import Feedpage from './pages/feed.page';
 import { useSelector } from 'react-redux';
@@ -34,6 +34,8 @@ function App() {
             <Route exact path="/homepg" element={<Homepage />} />
             <Route exact path="/addrecipe" element={<Addrecipe />} />
             <Route exact path="/feed" element={<Feedpage />} />
+            <Route exact path="/account" element={<Accountpage />} />
+            
           </>
         ) : (
           <>

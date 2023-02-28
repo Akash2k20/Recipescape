@@ -1,10 +1,15 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 const Footer = () => {
   const scrolltoTop = () => {
-    window.scrollTo({top: 0, behavior: 'smooth'})
-  }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const { user } = useSelector((state) => ({ ...state }));
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   return (
     <footer>
@@ -31,22 +36,26 @@ const Footer = () => {
             </li>
             <li className="py-2">
               <Link
-                to="/login"
+                to="/addrecipe"
                 className='className="no-underline  text-white hover:text-red-700 transition duration-150 ease-in-out'
               >
-                Login
+                Add recipe
               </Link>
             </li>
-            <li className="py-2">
+            {user && (
               <Link
-                to="/signup"
+              to='/'  
+              onClick={() => {
+                  dispatch({ type: "LOGOUT_USER" });
+                  navigate("/");
+                }}
                 className='className="no-underline   text-white hover:text-red-700 transition duration-150 ease-in-out'
               >
-                Signup
+                <li className="py-2">Logout</li>
               </Link>
-            </li>
+            )}
           </ul>
-          <p className="text-white py-1">
+          <p className="text-white py-3">
             Copyright 2023 @Recipiescape all rights reserved
           </p>
         </div>

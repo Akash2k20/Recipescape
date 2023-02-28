@@ -5,15 +5,9 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
-import {
-  TextField,
-  Select,
-  MenuItem,
-  FormControl,
-  Button,
-  InputLabel,
-} from "@mui/material";
+import { useNavigate, Link } from "react-router-dom";
+import { TextField, Button } from "@mui/material";
+import { CreateUser, GetUser } from "../../axios/user.axios";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -26,78 +20,125 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await createUserWithEmailAndPassword(auth, email, pass).then((res)=> {
-         
-        navigate("/login");
-      })
-     
+      await createUserWithEmailAndPassword(auth, email, pass).then(
+        async (res) => {
+          await CreateUser(email, username, prof).then(()=> {
+            setEmail("");
+            setUsername("");
+            setProf("");
+          })
+          
+          // navigate("/login");
+        }
+      );
     } catch (err) {
-      setErr(err)
+      setErr(err);
     }
   };
-  
 
   const googleAuthProvider = new GoogleAuthProvider();
   const handleGoogleSubmit = async () => {
     try {
-      await signInWithPopup(auth, googleAuthProvider).then((res) => {
-        navigate("/homepg");
+      await signInWithPopup(auth, googleAuthProvider).then(async (res) => {
+        await CreateUser(res.user.email, res.user.displayName, prof);
         console.log(res);
+        // navigate("/homepg");
       });
     } catch (error) {
       console.log(error);
     }
   };
 
-  
-
-  
-
   return (
-    <div className="bg-black h-[100vh]">
-      <div className="flex flex-col items-center justify-center">
-        <h1 className="text-4xl py-10 my-3 text-white">Sign-up</h1>
+    <div className="bg-black h-[100vh] flex items-center justify-center">
+      <div className="flex flex-col items-center justify-center p-8 px-14 bg-[#f6f6f6] rounded-lg">
+        <h1 className="text-4xl py-3 my-1 text-black font-semibold">Sign-up</h1>
+        <p className="text-black my-1">{err.toUpperCase()}</p>
         <form action="" className="flex flex-col items-center justify-center">
-          <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-            <TextField
-              id="filled-basic"
-              label="E-mail"
-              variant="filled"
-              className="rounded-md bg-red-300"
-              onClick={(e) => {setEmail(e.target.value)}}
-              sx={{
-                width: "20rem",
-                color: "success.main",
-                margin: "1rem",
-              }}
+          <Button
+            variant="contained"
+            onClick={handleGoogleSubmit}
+            sx={{
+              margin: "1rem",
+              padding: "0.75rem",
+              borderRadius: "999px",
+              backgroundColor: "#000000",
+              color: "#ffffff",
+              "&:hover": {
+                backgroundColor: "#023020",
+                color: "#ffffff",
+                transitionDuration: "500",
+              },
+            }}
+          >
+            <img
+              src="https://img.icons8.com/color/256/google-logo.png"
+              alt=""
+              width="25px"
             />
-            <TextField
-              id="filled-basic"
-              label="Password"
-              type="password"
-              variant="filled"
-              className="rounded-md  bg-red-300"
-              onClick={(e) => {setPass(e.target.value)}}
-              sx={{
-                width: "20rem",
-                color: "success.main",
-                margin: "1rem",
-              }}
-            />
-            <TextField
-              id="filled-basic"
-              label="Username"
-              onClick={(e) => {setUsername(e.target.value)}}
-              variant="filled"
-              className="rounded-md  bg-red-300"
-              sx={{
-                width: "20rem",
+          </Button>
+          <p>or signup the usual way</p>
+          <TextField
+            id="filled-basic"
+            label="E-mail"
+            variant="filled"
+            className="rounded-md bg-slate-300"
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+            sx={{
+              width: "20rem",
+              color: "success.main",
+              margin: "1rem",
+            }}
+          />
+          <TextField
+            id="filled-basic"
+            label="Password"
+            type="password"
+            variant="filled"
+            className="rounded-md  bg-slate-300"
+            onChange={(e) => {
+              setPass(e.target.value);
+            }}
+            sx={{
+              width: "20rem",
+              color: "success.main",
+              margin: "1rem",
+            }}
+          />
+          <TextField
+            id="filled-basic"
+            label="Username"
+            onChange={(e) => {
+              setUsername(e.target.value);
+            }}
+            variant="filled"
+            className="rounded-md  bg-slate-300"
+            sx={{
+              width: "20rem",
+              margin: "1rem",
+            }}
+          />
 
-                margin: "1rem",
-              }}
-            />
+          <Button
+            variant="contained"
+            onClick={handleSubmit}
+            sx={{
+              margin: "1rem",
+              padding: "0.75rem",
+              paddingLeft: "2.5rem",
+              paddingRight: "2.5rem",
+              backgroundColor: "#000000",
+              borderRadius: "1.5rem",
+              color: "#ffffff",
+              "&:hover": { backgroundColor: "#023020", color: "#ffffff" },
+            }}
+          >
+            Sign-up
+          </Button>
 
-            {/* <Select
+          {/* <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               label="Cooking Proficiency"
@@ -110,15 +151,16 @@ const Signup = () => {
                 margin: "1rem",
               }}
             > */}
-            <TextField
+          {/* <TextField
               id="filled-select"
               select
               label="Select proficiency"
               value={prof}
               defaultValue="Beginner"
               variant="filled"
-              onChange={(e) => {setProf(e.target.value)}}
-              
+              onChange={(e) => {
+                setProf(e.target.value);
+              }}
               // onChange={handleChange}
               className="rounded-md bg-red-300"
               sx={{
@@ -135,10 +177,10 @@ const Signup = () => {
               <MenuItem key="Professional" value=" Professional">
                 Professional
               </MenuItem>
-            </TextField>
+            </TextField> */}
 
-            {/* </Select> */}
-          </FormControl>
+          {/* </Select> */}
+
           {/* <label htmlFor="" className="m-1 text-white">
             Email
           </label>
@@ -182,23 +224,14 @@ const Signup = () => {
           >
             Create Account
           </button> */}
-          <Button
-            variant="contained"
-            onClick={handleSubmit}
-            sx={{
-              margin: "0.5rem",
-              padding: "0.5rem",
-              paddingLeft: "1.5rem",
-              paddingRight: "1.5rem",
-              backgroundColor: "#ffffff",
-              color: "#000000",
-              "&:hover": { backgroundColor: "#ffb3b3" },
-            }}
-          >
-            Sign-up
-          </Button>
+          <p className="m-1">
+            Already have an account? &nbsp;
+            <Link to="/login" className="text-blue-500 ">
+              Login
+            </Link>
+          </p>
         </form>
-        <p className="text-white p-2">or using google</p>
+        <hr className="bg-b font-semibold border border-black w-full m-1" />
         {/* <button
           className="rounded-md mt-3 mb-5 text-black border-white bg-white border-1 p-2 flex justify-center items-center"
           onClick={handleGoogleSubmit}
@@ -210,28 +243,6 @@ const Signup = () => {
           />
           <p className="pl-2">Create Account using Google</p>
         </button> */}
-        <Button
-          variant="contained"
-          onClick={handleGoogleSubmit}
-          className="bg-red-500"
-          sx={{
-            margin: "0.5rem",
-            padding: "0.5rem",
-            paddingLeft: "1rem",
-            paddingRight: "1rem",
-            backgroundColor: "#ffffff",
-            color: "#000000",
-            "&:hover": { backgroundColor: "#ffb3b3" },
-          }}
-        >
-          <img
-            src="https://img.icons8.com/color/256/google-logo.png"
-            alt=""
-            width="25px"
-            className="mx-2"
-          />
-          Sign-up using Google
-        </Button>
       </div>
     </div>
   );

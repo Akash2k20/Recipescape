@@ -1,4 +1,3 @@
-
 import Card from "../components/card.component";
 import Footer from "../components/footer.component";
 import Navbar from "../components/navbar.component";
@@ -6,12 +5,11 @@ import Popup from "../components/popup.component";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
-
 const Homepage = () => {
   const [isPopup, setIsPopup] = useState(false);
   const [recipe, setRecipe] = useState();
 
-  const {user} = useSelector((state)=>({...state}))
+  const { user } = useSelector((state) => ({ ...state }));
 
   return (
     <>
@@ -25,10 +23,7 @@ const Homepage = () => {
         <p className="text-white text-lg flex flex-col justify-start p-3">
           Your recipes
         </p>
-
-        
-          <Card setIsPopup={setIsPopup} setRecipe={setRecipe} />
-        
+        <Card setIsPopup={setIsPopup} setRecipe={setRecipe} text= 'Add recipes to show here' />
         <Footer />
       </div>
     </>

@@ -23,8 +23,8 @@ const Feedpage = () => {
         {/* <p className="text-white text-lg flex flex-col justify-start p-3">
           Your recipes
         </p> */}
-
-        <Card setIsPopup={setIsPopup} setRecipe={setRecipe} />
+        <p className="text-white text-xl m-4">Feed</p>
+        <Card setIsPopup={setIsPopup} setRecipe={setRecipe} text = 'No recipes to show'/>
 
         <Footer />
       </div>

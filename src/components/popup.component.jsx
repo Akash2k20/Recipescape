@@ -1,25 +1,36 @@
-import React , {useState} from 'react'
-import { Button, TextField } from '@mui/material';
-import {UpdateRecipe} from '../axios/recipe.axios'
+import React, { useState } from "react";
+import { Button, TextField } from "@mui/material";
+import { UpdateRecipe, UploadImage } from "../axios/recipe.axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
-const Popup = ({recipe}) => {
-  
+const Popup = ({ recipe }) => {
   const [title, setTitle] = useState(recipe.blog_title);
   const [description, setDescription] = useState(recipe.blog_description);
   const [image, setImage] = useState(recipe.blog_img);
   const [time, setTime] = useState(recipe.blog_time);
-  
-  const handleUpdate = ()=> {
-    UpdateRecipe(recipe.blog_id,title, description, image, time)
-  }
+  const navigate = useNavigate()
 
-  
-  
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("file", image);
+    formData.append("upload_preset", "otevtlmi");
+    toast.info("Your recipe is being updated", { theme: "dark" });
+
+    await UploadImage(formData).then(async (res) => {
+      await UpdateRecipe(recipe.blog_id, title, description, res.data.secure_url, time).then(()=> {
+        toast.info("Recipe Updated", {theme: "dark"})
+        navigate('/homepg')
+      })
+    });
+  };
+
   return (
     <div className="bg-black h-[100%] w-[100%] flex fixed top-0 left-0  flex-col items-center justify-center z-10">
       <div className="bg-white opacity-100 flex flex-col items-center justify-center rounded-lg p-5">
-        <div className=''>
-        <h1 className="text-3xl py-5">Update recipe</h1>
+        <div className="">
+          <h1 className="text-3xl py-5">Update recipe</h1>
         </div>
         <form
           action=""
@@ -33,7 +44,7 @@ const Popup = ({recipe}) => {
             variant="filled"
             fullWidth="true"
             className="rounded-md  bg-[#F8F0E3]"
-            onChange={(e)=> setTitle(e.target.value)}
+            onChange={(e) => setTitle(e.target.value)}
             // required
             sx={{
               width: "55rem",
@@ -50,7 +61,7 @@ const Popup = ({recipe}) => {
             multiline="true"
             // required
             className="rounded-md  bg-[#F8F0E3]"
-            onChange={(e)=> setDescription(e.target.value)}
+            onChange={(e) => setDescription(e.target.value)}
             sx={{
               width: "55rem",
               color: "success.main",
@@ -60,21 +71,26 @@ const Popup = ({recipe}) => {
 
           <Button
             variant="contained"
-            type="submit"
-            hidden="true"
+            component="label"
+            // onClick={(e)=> uploadImage(e)}
             sx={{
               margin: "1rem",
               padding: "0.5rem",
               paddingLeft: "1.5rem",
               paddingRight: "1.5rem",
               backgroundColor: "#ffffff",
+
               color: "#000000",
               borderColor: "#ffb3b3",
               // "&:hover": { backgroundColor: "#ffb3b3", color: "#000000" },
             }}
           >
             Upload
-            <input hidden accept="image/*" multiple type="file" />
+            <input
+              type="file"
+              hidden
+              onChange={(e) => setImage(e.target.files[0])}
+            />
           </Button>
 
           <TextField
@@ -86,7 +102,7 @@ const Popup = ({recipe}) => {
             multiline="true"
             // required
             className="rounded-md  bg-[#F8F0E3]"
-            onChange={(e)=> setTime(e.target.value) }
+            onChange={(e) => setTime(e.target.value)}
             sx={{
               width: "55rem",
               color: "success.main",
@@ -116,4 +132,4 @@ const Popup = ({recipe}) => {
   );
 };
 
-export default Popup
+export default Popup;

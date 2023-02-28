@@ -28,13 +28,19 @@ const Navbar = () => {
       >
         Add recipe
       </Link>
+      <Link
+        to="/account"
+        className='className="no-underline px-10 py-5 mx-5 text-white hover:text-red-700 transition duration-150 ease-in-out'
+      >
+        Account
+      </Link>
 
       {user && (
         <Link
           to="/"
           onClick={() => {
             dispatch({ type: "LOGOUT_USER" });
-            navigate('/')
+            navigate("/");
           }}
           className='className="no-underline px-10 py-5 mx-5 text-white hover:text-red-700 transition duration-150 ease-in-out'
         >

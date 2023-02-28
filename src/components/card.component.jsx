@@ -4,7 +4,7 @@ import { DeleteRecipe, ShowRecipe } from "../axios/recipe.axios";
 import { Button } from "@mui/material";
 import {Image} from "cloudinary-react"
 
-const Card = ({ setIsPopup, setRecipe }) => {
+const Card = ({ setIsPopup, setRecipe, text }) => {
   const [recipes, setRecipes] = useState([]);
 
   // const [title, setTitle] = useState("");
@@ -34,7 +34,7 @@ const Card = ({ setIsPopup, setRecipe }) => {
   return (
     <>
       {/* {JSON.stringify(recipes)} */}
-      <div className="lg:grid grid-rows-2 grid-cols-3 w-[100%] place-content-evenly mx-auto gap-0">
+      <div className="lg:grid grid-rows-2 grid-cols-3 w-[100%] place-content-evenly mx-auto gap-0 my-5">
         {recipes.length > 0
           ? recipes.map((recipe) => {
               return (
@@ -94,7 +94,7 @@ const Card = ({ setIsPopup, setRecipe }) => {
       {recipes.length === 0 && (
         <>
           <h1 className="text-2xl text-white flex flex-col items-center justify-center h-[40vh]">
-            Add recipes to display here
+            {text}
           </h1>
         </>
       )}

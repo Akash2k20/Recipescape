@@ -4,9 +4,9 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 
-import React, { useState } from "react";
+import React,  { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { auth } from "../../firebase/firebase-config";
 import { TextField, Button } from "@mui/material";
 
@@ -22,10 +22,12 @@ const Login = () => {
     try {
       await signInWithEmailAndPassword(auth, email, pass).then((res) => {
         console.log(res.data);
+
         dispatch({
           type: "CREATE_USER",
           payload: res.data,
         });
+      
         navigate("/homepg");
       });
     } catch (error) {
@@ -53,9 +55,10 @@ const Login = () => {
 
   return (
     <div className="bg-black h-[100vh] flex items-center justify-center">
-      <div className="flex flex-col items-center justify-center pb-16">
-        <h1 className="text-4xl py-3 my-3 text-white">Login</h1>
-        <p className="text-white">{err.toUpperCase()}</p>
+      <div className="flex flex-col items-center justify-center p-8  bg-[#f6f6f6] rounded-lg">
+        <h1 className="text-4xl py-3 my-0.5 text-black font-semibold">Login</h1>
+        <p className="text-black my-1">{err.toUpperCase()}</p>
+
         <form
           action="submit"
           className="flex flex-col items-center justify-center"
@@ -64,14 +67,39 @@ const Login = () => {
               Email
             </label> */}
 
+          <Button
+            variant="contained"
+            onClick={handleGoogleSubmit}
+            sx={{
+              margin: "1rem",
+              padding: "0.75rem",
+              borderRadius: "999px",
+              backgroundColor: "#000000",
+              color: "#ffffff",
+              "&:hover": {
+                backgroundColor: "#023020",
+                color: "#ffffff",
+                transitionDuration: "500",
+              },
+            }}
+          >
+            <img
+              src="https://img.icons8.com/color/256/google-logo.png"
+              alt=""
+              width="25px"
+            />
+          </Button>
+          <p>or login using e-mail</p>
           <TextField
             id="filled-basic"
             label="E-mail"
             variant="filled"
-            className="rounded-md bg-red-300"
+            className="rounded-md bg-slate-300"
             sx={{
               width: "20rem",
               margin: "1rem",
+              marginLeft: "2rem",
+              marginRight: "2rem",
             }}
           />
           <TextField
@@ -79,7 +107,7 @@ const Login = () => {
             label="Password"
             type="password"
             variant="filled"
-            className="rounded-md  bg-red-300"
+            className="rounded-md  bg-slate-300"
             sx={{
               width: "20rem",
               margin: "1rem",
@@ -108,45 +136,32 @@ const Login = () => {
             >
               Login
             </button> */}
+
           <Button
             variant="contained"
             onClick={handleSubmit}
             sx={{
               margin: "1rem",
-              padding: "0.5rem",
-              paddingLeft: "2rem",
-              paddingRight: "2rem",
-              backgroundColor: "#ffffff",
-              color: "#000000",
-              "&:hover": { backgroundColor: "#ffb3b3" },
+              padding: "0.75rem",
+              paddingLeft: "2.5rem",
+              paddingRight: "2.5rem",
+              backgroundColor: "#000000",
+              borderRadius: "1.5rem",
+              color: "#ffffff",
+              "&:hover": { backgroundColor: "#023020", color: "#ffffff" },
             }}
           >
             Login
           </Button>
+          <p className="m-1">
+            Don't have an account? &nbsp;
+            <Link to="/signup" className="text-blue-500 ">
+              Signup
+            </Link>
+          </p>
         </form>
-        <p className="text-white p-2">or by using google</p>
-        <Button
-          variant="contained"
-          onClick={handleGoogleSubmit}
-          className="bg-red-500"
-          sx={{
-            margin: "1rem",
-            padding: "0.5rem",
-            paddingLeft: "0.5rem",
-            paddingRight: "1rem",
-            backgroundColor: "#ffffff",
-            color: "#000000",
-            "&:hover": { backgroundColor: "#ffb3b3" },
-          }}
-        >
-          <img
-            src="https://img.icons8.com/color/256/google-logo.png"
-            alt=""
-            width="25px"
-            className="mx-2"
-          />
-          Login using Google
-        </Button>
+        <hr className="bg-b font-semibold border border-black w-full m-1" />
+
         {/* <button
             className="rounded-md m-5 text-black border-white bg-white border-1 p-2 flex justify-center items-center "
             onClick={handleGoogleSubmit}
