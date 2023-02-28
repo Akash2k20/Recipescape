@@ -37,7 +37,6 @@ exports.UpdateRecipe = async (req, res) => {
   const blog_id = req.params.blog_id;
   try {
     await Recipe.update(
-        
       {
         blog_title,
         blog_description,

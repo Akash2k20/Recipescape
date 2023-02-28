@@ -5,6 +5,6 @@ const { Addrecipe, Showrecipes, Deleterecipe, UpdateRecipe } = require("../contr
 router.post("/addrecipe", Addrecipe)
 router.get("/homepg", Showrecipes)
 router.delete("/delete/:blog_id", Deleterecipe)
-router.put("/update/:blog_id", UpdateRecipe)
+router.put("/update/:blog_id", UpdateRecipe)    
 
 module.exports = router

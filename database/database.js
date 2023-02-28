@@ -16,4 +16,5 @@ sequelize.authenticate().then((result) => {console.log("Database Connected")}).c
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 db.Recipe = require("../database/models/recipe.model")(sequelize, Sequelize.DataTypes)
+db.User = require("../database/models/user.model")(sequelize, Sequelize.DataTypes)
 module.exports = db
