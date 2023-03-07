@@ -44,7 +44,10 @@ exports.UpdateRecipe = async (req, res) => {
         blog_time,
       },
       { where: { blog_id } }
-    );
+    ).then((response) => {
+      res.json("Updated");
+      console.log(response);
+    });
   } catch (error) {
     console.log(error);
   }
