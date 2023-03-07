@@ -21,7 +21,8 @@ const Popup = ({ recipe, setIsPopup }) => {
     await UploadImage(formData).then(async (res) => {
       handlePopupClose()
       await UpdateRecipe(recipe.blog_id, title, description, res.data.secure_url, time).then(()=> {
-        toast.success("Recipe Updated. Refresh to see updated content", {theme: "dark"})
+        toast.success("Recipe Updated!", {theme: "dark"})
+        window.location.reload()
       })
     });
   };
@@ -32,9 +33,9 @@ const Popup = ({ recipe, setIsPopup }) => {
 
   return (
     <div className="bg-black h-[100%] w-[100%] flex fixed top-0 left-0  flex-col items-center justify-center z-10">
-      <div className="bg-white opacity-100 flex flex-col items-center justify-center rounded-lg p-5">
-        <div className="w-full flex justify-between items-center px-5">
-          <h1 className="text-3xl py-5">Update recipe</h1>
+      <div className="bg-white flex flex-col items-center justify-center rounded-lg p-5">
+        <div className="w-full flex lg:justify-between items-center px-5">
+          <h1 className="text-3xl py-5 lg:mr-0 mr-24">Update recipe</h1>
           <button onClick={handlePopupClose}>
             <img
               src="https://img.icons8.com/ios-glyphs/256/multiply.png"
@@ -58,7 +59,10 @@ const Popup = ({ recipe, setIsPopup }) => {
             onChange={(e) => setTitle(e.target.value)}
             // required
             sx={{
-              width: "55rem",
+              width: "22rem",
+              "@media(min-width: 1024px)": {
+                width: "55rem",
+              },
               color: "success.main",
               margin: "1rem",
             }}
@@ -74,7 +78,10 @@ const Popup = ({ recipe, setIsPopup }) => {
             className="rounded-md  bg-[#F8F0E3]"
             onChange={(e) => setDescription(e.target.value)}
             sx={{
-              width: "55rem",
+              width: "22rem",
+              "@media(min-width: 1024px)": {
+                width: "55rem",
+              },
               color: "success.main",
               margin: "1rem",
             }}
@@ -115,7 +122,10 @@ const Popup = ({ recipe, setIsPopup }) => {
             className="rounded-md  bg-[#F8F0E3]"
             onChange={(e) => setTime(e.target.value)}
             sx={{
-              width: "55rem",
+              width: "22rem",
+              "@media(min-width: 1024px)": {
+                width: "55rem",
+              },
               color: "success.main",
               margin: "1rem",
             }}
@@ -126,9 +136,12 @@ const Popup = ({ recipe, setIsPopup }) => {
             onClick={handleUpdate}
             sx={{
               margin: "1rem",
-              padding: "0.5rem",
-              paddingLeft: "1.5rem",
-              paddingRight: "1.5rem",
+              '@media(min-width: 1024px)': {
+                margin: "1rem",
+                padding: "0.5rem",
+                paddingLeft: "1.5rem",
+                paddingRight: "1.5rem",
+              },
               backgroundColor: "#ffffff",
               color: "#000000",
               borderColor: "#ffb3b3",

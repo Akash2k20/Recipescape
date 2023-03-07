@@ -4,11 +4,13 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 
-import React,  { useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { auth } from "../../firebase/firebase-config";
 import { TextField, Button } from "@mui/material";
+import { GetUser } from "../../axios/user.axios";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -27,7 +29,8 @@ const Login = () => {
           type: "CREATE_USER",
           payload: res.data,
         });
-      
+
+        toast.success("Successfully logged in", {theme: "dark"})
         navigate("/homepg");
       });
     } catch (error) {
@@ -39,14 +42,30 @@ const Login = () => {
   const googleAuthProvider = new GoogleAuthProvider();
   const handleGoogleSubmit = async () => {
     try {
-      await signInWithPopup(auth, googleAuthProvider).then((res) => {
-        console.log(res.user.providerData[0]);
-        dispatch({
-          type: "CREATE_USER",
-          payload: res.user.providerData[0],
+      await signInWithPopup(auth, googleAuthProvider).then(async (res) => {
+        await GetUser(res.user.email).then((resp) => {
+          // console.log(typeof resp.data);
+          // console.log(resp.data);
+          if(resp.data === null ){
+            navigate('/signup')
+          }
+          else{
+            dispatch({
+              type: "CREATE_USER",
+              payload: res.user.providerData[0],
+            });
+            navigate("/homepg");
+            toast.success("Successfully logged in", { theme: "dark" });
+          }
         });
-        navigate("/homepg");
-        console.log(res);
+        // if(res.user.email === ){
+
+        // }
+        // else{
+        //   navigate('/signup')
+        // }
+        // console.log(res.user.providerData[0]);
+        // if (user.email === email)
       });
     } catch (error) {
       console.log(error);
@@ -54,10 +73,12 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-[#090D0C] via-[#0A1312] to-[#0E2020] min-h-screen flex items-center justify-center">
-      <div className="flex flex-col items-center justify-center p-8  bg-[#f6f6f6] rounded-lg">
-        <h1 className="text-4xl py-3 my-0.5 text-black font-semibold">Login</h1>
-        <p className="text-black my-1">{err.toUpperCase()}</p>
+    <div className="bg-gradient-to-r from-[#090D0C] via-[#0A1312] to-[#0E2020] min-h-screen lg:flex lg:items-center lg:justify-center flex flex-col justify-center items-center">
+      <div className="flex flex-col items-center justify-center p-8 bg-[#f6f6f6] lg:w-fit w-[85%] rounded-lg">
+        <h1 className="text-4xl py-3 my-0.5  text-black font-semibold">
+          Login
+        </h1>
+        <p className="text-black my-1 w-[10%]">{err.toUpperCase()}</p>
 
         <form
           action="submit"
@@ -157,6 +178,8 @@ const Login = () => {
             Don't have an account? &nbsp;
             <Link to="/signup" className="text-blue-500 ">
               Signup
+            </Link>
+            &nbsp;| <Link to="/" className="text-blue-500"> Go back
             </Link>
           </p>
         </form>

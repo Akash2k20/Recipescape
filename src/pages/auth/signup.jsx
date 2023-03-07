@@ -8,6 +8,8 @@ import {
 import { useNavigate, Link } from "react-router-dom";
 import { TextField, Button } from "@mui/material";
 import { CreateUser, GetUser } from "../../axios/user.axios";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -16,19 +18,23 @@ const Signup = () => {
   const [username, setUsername] = useState("");
   const [prof, setProf] = useState("");
   const [err, setErr] = useState("");
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await createUserWithEmailAndPassword(auth, email, pass).then(
         async (res) => {
-          await CreateUser(email, username, prof).then(()=> {
+          await CreateUser(email, username, prof).then(() => {
             setEmail("");
             setUsername("");
             setProf("");
-          })
-          
-          // navigate("/login");
+          });
+           dispatch({
+             type: "CREATE_USER",
+             payload: res.user.providerData[0],
+           });
+          navigate("/homepg");
         }
       );
     } catch (err) {
@@ -40,9 +46,19 @@ const Signup = () => {
   const handleGoogleSubmit = async () => {
     try {
       await signInWithPopup(auth, googleAuthProvider).then(async (res) => {
-        await CreateUser(res.user.email, res.user.displayName, prof);
-        console.log(res);
-        // navigate("/homepg");
+        await GetUser(res.user.email).then(async (resp) => {
+          if (resp.data) {
+            toast.error("User exists. Please login using this account", {theme: "dark"});
+          } else {
+            await CreateUser(res.user.email, res.user.displayName, prof);
+            console.log(res);
+            dispatch({
+              type: "CREATE_USER",
+              payload: res.user.providerData[0],
+            });
+            navigate("/homepg");
+          }
+        });
       });
     } catch (error) {
       console.log(error);
@@ -50,8 +66,8 @@ const Signup = () => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-[#090D0C] via-[#0A1312] to-[#0E2020] min-h-screen flex items-center justify-center">
-      <div className="flex flex-col items-center justify-center p-8 px-14 bg-[#f6f6f6] rounded-lg">
+    <div className="bg-gradient-to-r from-[#090D0C] via-[#0A1312] to-[#0E2020] min-h-screen lg:flex lg:items-center lg:justify-center flex flex-col justify-center items-center">
+      <div className="flex flex-col items-center justify-center p-8  bg-[#f6f6f6] lg:w-[30%] w-[85%] rounded-lg">
         <h1 className="text-4xl py-3 my-1 text-black font-semibold">Sign-up</h1>
         <p className="text-black my-1">{err.toUpperCase()}</p>
         <form action="" className="flex flex-col items-center justify-center">
@@ -228,6 +244,10 @@ const Signup = () => {
             Already have an account? &nbsp;
             <Link to="/login" className="text-blue-500 ">
               Login
+            </Link>
+            &nbsp;|{" "}
+            <Link to="/" className="text-blue-500">
+              Go back
             </Link>
           </p>
         </form>

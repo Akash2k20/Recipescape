@@ -8,10 +8,10 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex justify-between w-full px-10 py-3 bg-gradient-to-r from-[#090D0C] via-[#0A1312] to-[#0E2020] relative h-[10vh] ">
+    <div className="flex lg:flex-row flex-col lg:justify-between justify-center items-center lg:w-full px-10 py-3 bg-gradient-to-r from-[#090D0C] via-[#0A1312] to-[#0E2020] relative lg:h-[10vh] ">
       <Link
         to="/homepg"
-        className="no-underline px-10 py-5 mx-5 text-white hover:text-red-700 transition duration-150 ease-in-out"
+        className="no-underline px-10 py-5 mx-5 text-white hover:text-red-700 transition duration-150 ease-in-out "
       >
         Home
       </Link>

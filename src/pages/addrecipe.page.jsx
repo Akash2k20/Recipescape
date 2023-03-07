@@ -21,12 +21,11 @@ const Addrecipe = () => {
     formData.append("file", image);
     formData.append("upload_preset", "otevtlmi");
     toast.info("Your recipe is being uploaded", { theme: "dark" });
-    
+
     await UploadImage(formData).then(async (res) => {
-      
       await AddRecipe(title, description, res.data.secure_url, time).then(
         (res) => {
-          toast.success("Recipe uploaded", {theme: "dark"});
+          toast.success("Recipe uploaded", { theme: "dark" });
           navigate("/homepg");
         }
       );
@@ -42,7 +41,6 @@ const Addrecipe = () => {
 
   return (
     <div className="bg-gradient-to-r from-[#090D0C] via-[#0A1312] to-[#0E2020] min-h-screen">
-      
       <Navbar />
 
       <div className="min-h-screen flex flex-col items-center justify-center">
@@ -57,7 +55,10 @@ const Addrecipe = () => {
             onChange={(e) => setTitle(e.target.value)}
             required
             sx={{
-              width: "55rem",
+              width: "20rem",
+              "@media(min-width: 1024px)": {
+                width: "50rem",
+              },
               color: "success.main",
               margin: "1rem",
             }}
@@ -72,7 +73,10 @@ const Addrecipe = () => {
             className="rounded-md  bg-[#F8F0E3]"
             onChange={(e) => setDescription(e.target.value)}
             sx={{
-              width: "55rem",
+              width: "20rem",
+              "@media(min-width: 1024px)": {
+                width: "50rem",
+              },
               color: "success.main",
               margin: "1rem",
             }}
@@ -113,7 +117,10 @@ const Addrecipe = () => {
             className="rounded-md  bg-[#F8F0E3]"
             onChange={(e) => setTime(e.target.value)}
             sx={{
-              width: "55rem",
+              width: "20rem",
+              "@media(min-width: 1024px)": {
+                width: "50rem",
+              },
               color: "success.main",
               margin: "1rem",
             }}

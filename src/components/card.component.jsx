@@ -4,7 +4,7 @@ import { DeleteRecipe, ShowRecipe } from "../axios/recipe.axios";
 import { Button } from "@mui/material";
 import {Image} from "cloudinary-react"
 
-const Card = ({ setIsPopup, setRecipe, text }) => {
+const Card = ({ setIsPopup, setRecipe, text, setDeletePopup }) => {
   const [recipes, setRecipes] = useState([]);
 
   // const [title, setTitle] = useState("");
@@ -20,29 +20,34 @@ const Card = ({ setIsPopup, setRecipe, text }) => {
     });
   }, [setIsPopup]);
 
-  const Deleterecipe = (id) => {
-    DeleteRecipe(id).then(() => {
-      setRecipes(recipes.filter((recipe) => recipe.blog_id !== id));
-    });
-  };
+  // const Deleterecipe = (id) => {
+  //   DeleteRecipe(id).then(() => {
+  //     setRecipes(recipes.filter((recipe) => recipe.blog_id !== id));
+  //   });
+  // };
 
   const handlePopup = (recipe) => {
     setRecipe(recipe);
     setIsPopup(true);
   };
 
+  const handleDeletePopup = (recipe)=>{
+    setRecipe(recipe);
+    setDeletePopup(true)
+  }
+
   return (
     <>
       {/* {JSON.stringify(recipes)} */}
-      <div className="lg:grid grid-rows-2 grid-cols-3 w-[100%] place-content-evenly mx-auto gap-0 my-5">
+      <div className="lg:grid lg:grid-rows-2 lg:grid-cols-3 lg:place-items-center mx-auto gap-0 my-5">
         {recipes.length > 0
           ? recipes.map((recipe) => {
               return (
-                <div className=" lg:w-[80%] w-[70%] flex flex-col justify-center items-start bg-[#F8F0E3] shadow-md lg:px-8 rounded-md lg:m-2.5 ml-7 p-3 my-2">
+                <div className=" lg:w-[80%] w-[90%] flex flex-col justify-center items-start bg-[#F8F0E3] shadow-md lg:px-8 rounded-md lg:m-2.5 ml-5 p-3 my-2">
                   <Image
                     className="object-contain w-[400px] h-[300px]"
                     cloudName="dxll1lfir"
-                    publicId= {recipe.blog_img}
+                    publicId={recipe.blog_img}
                   />
 
                   <h1 className="font-semibold text-xl py-2">
@@ -61,7 +66,6 @@ const Card = ({ setIsPopup, setRecipe, text }) => {
                         paddingLeft: "1.5rem",
                         paddingRight: "1.5rem",
                         backgroundColor: "#ffffff",
-
                         color: "#000000",
                         borderColor: "#000000",
                       }}
@@ -71,7 +75,7 @@ const Card = ({ setIsPopup, setRecipe, text }) => {
                     <Button
                       variant="contained"
                       // type=""
-                      onClick={() => Deleterecipe(recipe.blog_id)}
+                      onClick={()=> handleDeletePopup(recipe)}
                       sx={{
                         marginTop: "1rem",
                         padding: "0.5rem",
