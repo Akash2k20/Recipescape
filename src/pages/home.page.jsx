@@ -2,7 +2,7 @@ import Card from "../components/card.component";
 import Footer from "../components/footer.component";
 import Navbar from "../components/navbar.component";
 import Popup from "../components/popup.component";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 const Homepage = () => {
@@ -11,9 +11,11 @@ const Homepage = () => {
 
   const { user } = useSelector((state) => ({ ...state }));
 
+  
+
   return (
     <>
-      {isPopup && <Popup recipe={recipe} />}
+      {isPopup && <Popup recipe={recipe} setIsPopup = {setIsPopup} />}
 
       <div className=" bg-gradient-to-r from-[#090D0C] via-[#0A1312] to-[#0E2020] min-h-screen">
         <Navbar />

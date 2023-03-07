@@ -5,6 +5,7 @@ import { AddRecipe, UploadImage } from "../axios/recipe.axios";
 import Footer from "../components/footer.component";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import PropTypes from "prop-types";
 
 const Addrecipe = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const Addrecipe = () => {
       
       await AddRecipe(title, description, res.data.secure_url, time).then(
         (res) => {
-          toast.success("Data uploaded", {theme: "dark"});
+          toast.success("Recipe uploaded", {theme: "dark"});
           navigate("/homepg");
         }
       );
@@ -54,7 +55,7 @@ const Addrecipe = () => {
             fullWidth="true"
             className="rounded-md  bg-[#F8F0E3]"
             onChange={(e) => setTitle(e.target.value)}
-            // required
+            required
             sx={{
               width: "55rem",
               color: "success.main",
@@ -67,7 +68,7 @@ const Addrecipe = () => {
             variant="filled"
             fullWidth="true"
             multiline="true"
-            // required
+            required
             className="rounded-md  bg-[#F8F0E3]"
             onChange={(e) => setDescription(e.target.value)}
             sx={{
@@ -97,6 +98,7 @@ const Addrecipe = () => {
             <input
               type="file"
               hidden
+              required
               onChange={(e) => setImage(e.target.files[0])}
             />
           </Button>
@@ -107,7 +109,7 @@ const Addrecipe = () => {
             variant="filled"
             fullWidth="true"
             multiline="true"
-            // required
+            required
             className="rounded-md  bg-[#F8F0E3]"
             onChange={(e) => setTime(e.target.value)}
             sx={{
@@ -139,6 +141,10 @@ const Addrecipe = () => {
       <Footer />
     </div>
   );
+};
+
+TextField.propTypes = {
+  classes: PropTypes.object.isRequired,
 };
 
 export default Addrecipe;

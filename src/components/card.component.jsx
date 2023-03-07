@@ -18,7 +18,7 @@ const Card = ({ setIsPopup, setRecipe, text }) => {
       console.log(response);
       setRecipes(response.data);
     });
-  }, []);
+  }, [setIsPopup]);
 
   const Deleterecipe = (id) => {
     DeleteRecipe(id).then(() => {

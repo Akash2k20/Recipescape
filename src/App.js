@@ -7,6 +7,7 @@ import Homepage from './pages/home.page';
 import Accountpage from './pages/account.page';
 import Addrecipe from './pages/addrecipe.page';
 import Feedpage from './pages/feed.page';
+import About from './pages/about.page';
 import { useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
@@ -41,6 +42,7 @@ function App() {
           <>
             <Route exact path="/signup" element={<Signup />} />
             <Route exact path="/login" element={<Login />} />
+            <Route exact path="/about" element={<About />} />
             <Route exact path="/" element={<Landingpage />} />
           </>
         )}

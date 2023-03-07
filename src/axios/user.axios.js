@@ -9,6 +9,6 @@ export const CreateUser = async (email, username, proficiency) => {
 };
 
 
-export const GetUser = async(user_id) => {
-    return await axios.get(`http://localhost:8080/${user_id}` );
+export const GetUser = async(email) => {
+    return await axios.get(`http://localhost:8080/${email}` );
 }

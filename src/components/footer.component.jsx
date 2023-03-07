@@ -56,7 +56,7 @@ const Footer = () => {
             )}
           </ul>
           <p className="text-white py-3">
-            Copyright 2023 @Recipiescape all rights reserved
+            Copyright 2023 @Recipescape all rights reserved
           </p>
         </div>
 

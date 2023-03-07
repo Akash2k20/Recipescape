@@ -54,7 +54,7 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-black h-[100vh] flex items-center justify-center">
+    <div className="bg-gradient-to-r from-[#090D0C] via-[#0A1312] to-[#0E2020] min-h-screen flex items-center justify-center">
       <div className="flex flex-col items-center justify-center p-8  bg-[#f6f6f6] rounded-lg">
         <h1 className="text-4xl py-3 my-0.5 text-black font-semibold">Login</h1>
         <p className="text-black my-1">{err.toUpperCase()}</p>
