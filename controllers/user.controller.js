@@ -14,7 +14,8 @@ exports.CreateUser = async (req, res) => {
 
 exports.GetUser = async (req, res) => {
   const { email } = req.params;
-  const getuser = await User.find({ email }).then((response) => {
+  console.log(email);
+  const getuser = await User.findOne({where: {email: email} }).then((response) => {
     res.json(response);
   });
 };
