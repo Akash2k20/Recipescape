@@ -15,7 +15,8 @@ const DeleteConfirmPopup = ({ setDeletePopup, recipe }) => {
 //     });
 //   };
 
-  const Deleterecipe = async(id) => {
+const Deleterecipe = async(id) => {
+    toast.success("Recipe succesfully deleted", { theme: "dark" });
     await DeleteRecipe(id).then(() => {
     //   setRecipes(recipes.filter((recipe) => recipe.blog_id !== id));
     // console.log("Deleted");
