@@ -1,11 +1,13 @@
 /* eslint-disable no-lone-blocks */
 import React, { useState, useEffect } from "react";
-import { DeleteRecipe, ShowRecipe } from "../axios/recipe.axios";
+import { DeleteRecipe, ShowRecipe, ShowRecipeByUser } from "../axios/recipe.axios";
 import { Button } from "@mui/material";
-import {Image} from "cloudinary-react"
+import { Image } from "cloudinary-react";
+import { useSelector } from "react-redux";
 
-const Card = ({ setIsPopup, setRecipe, text, setDeletePopup }) => {
+const Card = ({ setIsPopup, setRecipe, text, setDeletePopup, searchText }) => {
   const [recipes, setRecipes] = useState([]);
+  const user = useSelector((state) => state.user)
 
   // const [title, setTitle] = useState("");
 
@@ -13,86 +15,104 @@ const Card = ({ setIsPopup, setRecipe, text, setDeletePopup }) => {
   // const [time, setTime] = useState("")
   // const [img, setImg] = useState("")
 
-  useEffect(() => {
-    ShowRecipe().then((response) => {
-      console.log(response);
-      setRecipes(response.data);
-    });
-  }, [setIsPopup]);
-
   // const Deleterecipe = (id) => {
   //   DeleteRecipe(id).then(() => {
   //     setRecipes(recipes.filter((recipe) => recipe.blog_id !== id));
   //   });
   // };
 
+  useEffect(() => {
+    console.log(user.user_id);
+    ShowRecipeByUser(user.user_id).then((response) => {
+      console.log(response);
+      setRecipes(response.data);
+    });
+  }, []) ;
+
+  useEffect(()=> {
+
+  })
+
   const handlePopup = (recipe) => {
     setRecipe(recipe);
     setIsPopup(true);
   };
 
-  const handleDeletePopup = (recipe)=>{
+  const handleDeletePopup = (recipe) => {
     setRecipe(recipe);
-    setDeletePopup(true)
-  }
+    setDeletePopup(true);
+  };
 
   return (
     <>
       {/* {JSON.stringify(recipes)} */}
       <div className="lg:grid lg:grid-rows-2 lg:grid-cols-3 lg:place-items-center mx-auto gap-0 my-5">
         {recipes.length > 0
-          ? recipes.map((recipe) => {
-              return (
-                <div className=" lg:w-[80%] w-[90%] flex flex-col justify-center items-start bg-[#F8F0E3] shadow-md lg:px-8 rounded-md lg:m-2.5 ml-5 p-3 my-2">
-                  <Image
-                    className="object-contain w-[400px] h-[300px]"
-                    cloudName="dxll1lfir"
-                    publicId={recipe.blog_img}
-                  />
+          ? recipes
+              .filter(
+                (recipes)=>
+                recipes.blog_title
+                  .toLowerCase()
+                  .includes(searchText.toLowerCase())
+              )
+              .map((recipe) => {
+                return (
+                  <div className=" lg:w-[80%] w-[90%] flex flex-col justify-center items-start bg-[#F8F0E3] shadow-md lg:px-8 rounded-md lg:m-2.5 ml-5 p-3 my-2">
+                    <Image
+                      className="object-contain w-[400px] h-[300px]"
+                      cloudName="dxll1lfir"
+                      publicId={recipe.blog_img}
+                    />
 
-                  <h1 className="font-semibold text-xl py-2">
-                    {recipe.blog_title}
-                  </h1>
-                  <p className="py-2">{recipe.blog_description}</p>
-                  <p className="py-2">Time to make: {recipe.blog_time} </p>
-                  <div className="flex justify-between w-full">
-                    <Button
-                      variant="contained"
-                      // type=""
-                      onClick={() => handlePopup(recipe)}
-                      sx={{
-                        marginTop: "1rem",
-                        padding: "0.5rem",
-                        paddingLeft: "1.5rem",
-                        paddingRight: "1.5rem",
-                        backgroundColor: "#ffffff",
-                        color: "#000000",
-                        borderColor: "#000000",
-                      }}
-                    >
-                      Edit Recipe
-                    </Button>
-                    <Button
-                      variant="contained"
-                      // type=""
-                      onClick={()=> handleDeletePopup(recipe)}
-                      sx={{
-                        marginTop: "1rem",
-                        padding: "0.5rem",
-                        paddingLeft: "1.5rem",
-                        paddingRight: "1.5rem",
-                        backgroundColor: "#ffffff",
+                    <h1 className="font-semibold text-xl py-2">
+                      {recipe.blog_title}
+                    </h1>
+                    <p className="py-2">{recipe.blog_description}</p>
+                    <p className="py-2">Time to make: {recipe.blog_time} </p>
+                    <div className="flex justify-between w-full">
+                      <Button
+                        variant="contained"
+                        // type=""
+                        onClick={() => handlePopup(recipe)}
+                        sx={{
+                          marginTop: "1rem",
+                          paddingLeft: "1rem",
+                          paddingRight: "1rem",
+                          backgroundColor: "#ffffff",
+                          color: "#000000",
+                          borderColor: "#000000",
+                          "&:hover": {
+                            backgroundColor: "#023020",
+                            color: "#ffffff",
+                          },
+                        }}
+                      >
+                        ✎ Edit Recipe
+                      </Button>
+                      <Button
+                        variant="contained"
+                        // type=""
+                        onClick={() => handleDeletePopup(recipe)}
+                        sx={{
+                          marginTop: "1rem",
+                          paddingLeft: "0.75rem",
+                          paddingRight: "0.75rem",
+                          backgroundColor: "#ffffff",
 
-                        color: "#000000",
-                        borderColor: "#000000",
-                      }}
-                    >
-                      Delete Recipe
-                    </Button>
+                          color: "#000000",
+                          borderColor: "#000000",
+                          "&:hover": {
+                            backgroundColor: "#ff0000",
+                            color: "#ffffff",
+                          },
+                        }}
+                      >
+                        🗑️ Delete Recipe
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              );
-            })
+                );
+              })
           : null}
       </div>
       {recipes.length === 0 && (

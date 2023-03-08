@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/navbar.component";
 import { TextField, Button } from "@mui/material";
 import { AddRecipe, UploadImage } from "../axios/recipe.axios";
@@ -6,9 +6,13 @@ import Footer from "../components/footer.component";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
 const Addrecipe = () => {
   const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
+
+ 
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -23,12 +27,16 @@ const Addrecipe = () => {
     toast.info("Your recipe is being uploaded", { theme: "dark" });
 
     await UploadImage(formData).then(async (res) => {
-      await AddRecipe(title, description, res.data.secure_url, time).then(
-        (res) => {
-          toast.success("Recipe uploaded", { theme: "dark" });
-          navigate("/homepg");
-        }
-      );
+      await AddRecipe(
+        title,
+        description,
+        res.data.secure_url,
+        time,
+        user.user_id
+      ).then((res) => {
+        toast.success("Recipe uploaded", { theme: "dark" });
+        navigate("/homepg");
+      });
     });
   };
 

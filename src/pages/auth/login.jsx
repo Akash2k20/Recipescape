@@ -22,16 +22,19 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await signInWithEmailAndPassword(auth, email, pass).then((res) => {
-        console.log(res.data);
-
-        dispatch({
-          type: "CREATE_USER",
-          payload: res.data,
-        });
-
-        toast.success("Successfully logged in", {theme: "dark"})
-        navigate("/homepg");
+      await signInWithEmailAndPassword(auth, email, pass).then(async (res) => {
+        console.log(res);
+        await GetUser(res.user.email).then((res)=> {
+          console.log(res);
+          dispatch({
+            type: "CREATE_USER",
+            payload: res.data,
+          });
+  
+          toast.success("Successfully logged in", { theme: "dark" });
+          navigate("/homepg");
+          
+        })
       });
     } catch (error) {
       console.log(error);
@@ -43,6 +46,7 @@ const Login = () => {
   const handleGoogleSubmit = async () => {
     try {
       await signInWithPopup(auth, googleAuthProvider).then(async (res) => {
+
         await GetUser(res.user.email).then((resp) => {
           // console.log(typeof resp.data);
           // console.log(resp.data);
@@ -78,7 +82,7 @@ const Login = () => {
         <h1 className="text-4xl py-3 my-0.5  text-black font-semibold">
           Login
         </h1>
-        <p className="text-black my-1 w-[10%]">{err.toUpperCase()}</p>
+        <p className="text-black my-1 ">{err}</p>
 
         <form
           action="submit"
@@ -116,6 +120,7 @@ const Login = () => {
             label="E-mail"
             variant="filled"
             className="rounded-md bg-slate-300"
+            onChange={(e)=>{setEmail(e.target.value)}}
             sx={{
               width: "20rem",
               margin: "1rem",
@@ -129,6 +134,7 @@ const Login = () => {
             type="password"
             variant="filled"
             className="rounded-md  bg-slate-300"
+            onChange={(e) => {setPass(e.target.value)}}
             sx={{
               width: "20rem",
               margin: "1rem",

@@ -46,8 +46,10 @@ const Deleterecipe = async(id) => {
               },
               backgroundColor: "#ffffff",
               color: "#000000",
-              borderColor: "#ffb3b3",
-              "&:hover": { backgroundColor: "#ffb3b3", color: "#000000" },
+              '&:hover' : {
+                backgroundColor: '#ffffff',
+                color: '#000000'
+              }
             }}
           >
             Cancel
@@ -66,10 +68,10 @@ const Deleterecipe = async(id) => {
                 paddingLeft: "1.5rem",
                 paddingRight: "1.5rem",
               },
-              backgroundColor: "#ffb3b3",
-              color: "#000000",
+              backgroundColor: "#ff0000",
+              color: "#ffffff",
               borderColor: "#ffb3b3",
-              "&:hover": { backgroundColor: "#ffb3b3", color: "#000000" },
+              "&:hover": { backgroundColor: "#ff0000", color: "#ffffff" },
             }}
           >
             Delete recipe

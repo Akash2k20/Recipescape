@@ -32,13 +32,14 @@ const Signup = () => {
           });
            dispatch({
              type: "CREATE_USER",
-             payload: res.user.providerData[0],
+             payload: res.data,
            });
           navigate("/homepg");
         }
       );
     } catch (err) {
       setErr(err);
+      console.log(err);
     }
   };
 
@@ -69,7 +70,7 @@ const Signup = () => {
     <div className="bg-gradient-to-r from-[#090D0C] via-[#0A1312] to-[#0E2020] min-h-screen lg:flex lg:items-center lg:justify-center flex flex-col justify-center items-center">
       <div className="flex flex-col items-center justify-center p-8  bg-[#f6f6f6] lg:w-[30%] w-[85%] rounded-lg">
         <h1 className="text-4xl py-3 my-1 text-black font-semibold">Sign-up</h1>
-        <p className="text-black my-1">{err.toUpperCase()}</p>
+        {/* <p className="text-black my-1">{err}</p> */}
         <form action="" className="flex flex-col items-center justify-center">
           <Button
             variant="contained"
