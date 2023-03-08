@@ -7,12 +7,11 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
+import { GetUser } from "../axios/user.axios";
 
 const Addrecipe = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
-
- 
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -27,16 +26,33 @@ const Addrecipe = () => {
     toast.info("Your recipe is being uploaded", { theme: "dark" });
 
     await UploadImage(formData).then(async (res) => {
-      await AddRecipe(
-        title,
-        description,
-        res.data.secure_url,
-        time,
-        user.user_id
-      ).then((res) => {
-        toast.success("Recipe uploaded", { theme: "dark" });
-        navigate("/homepg");
-      });
+      if(user.user_id){
+        await AddRecipe(
+          title,
+          description,
+          res.data.secure_url,
+          time,
+          user.user_id
+        ).then((res) => {
+          toast.success("Recipe uploaded", { theme: "dark" });
+          navigate("/homepg");
+        });
+
+      }else{
+        await GetUser(user.email).then(async(resp)=> {
+
+          await AddRecipe(
+            title,
+            description,
+            res.data.secure_url,
+            time,
+            resp.data.user_id
+          ).then((res) => {
+            toast.success("Recipe uploaded", { theme: "dark" });
+            navigate("/homepg");
+          });
+        })
+      }
     });
   };
 

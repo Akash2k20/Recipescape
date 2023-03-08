@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import DeleteConfirmPopup from "../components/deletepopup.component";
 import { TextField } from "@mui/material";
 import { ShowRecipeByUser } from "../axios/recipe.axios";
+import { GetUser } from "../axios/user.axios";
 
 const Homepage = () => {
   const [isPopup, setIsPopup] = useState(false);
@@ -18,14 +19,23 @@ const Homepage = () => {
   const user = useSelector((state) => state.user);
 
   useEffect(() => {
-    ShowRecipeByUser(user.user_id).then((response) => {
-      setRecipes(response.data);
-    });
+    if (user.user_id) {
+      ShowRecipeByUser(user.user_id).then(async (response) => {
+        setRecipes(response.data);
+      });
+    } else {
+      GetUser(user.email).then((resp) => {
+        console.log(resp);
+        ShowRecipeByUser(resp.data.user_id).then((responsee) => {
+          setRecipes(responsee.data);
+        });
+      });
+    }
   }, []);
 
   return (
     <>
-    {isPopup && <Popup recipe={recipe} setIsPopup={setIsPopup} />}
+      {isPopup && <Popup recipe={recipe} setIsPopup={setIsPopup} />}
       {deletePopup && (
         <DeleteConfirmPopup recipe={recipe} setDeletePopup={setDeletePopup} />
       )}
@@ -72,7 +82,7 @@ const Homepage = () => {
                     <Card
                       setIsPopup={setIsPopup}
                       setRecipe={setRecipe}
-                      recipe = {recipe}
+                      recipe={recipe}
                       setDeletePopup={setDeletePopup}
                       image={recipe.blog_img}
                       title={recipe.blog_title}

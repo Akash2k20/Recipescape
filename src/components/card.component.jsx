@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 
 const Card = ({ setIsPopup, setRecipe,image,title,desc,time,setDeletePopup, recipe, username }) => {
   // const [recipes, setRecipes] = useState([]);
-  const user = useSelector((state) => state.user)
+  // const user = useSelector((state) => state.user)
 
   // const [title, setTitle] = useState("");
 
