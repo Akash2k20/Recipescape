@@ -3,13 +3,15 @@ const { where } = require("sequelize");
 const { Recipe } = require("../database/database");
 
 exports.Addrecipe = async (req, res) => {
-  const { blog_title, blog_description, blog_img, blog_time } = req.body;
+  const { blog_title, blog_description, blog_img, blog_time, user_id } =
+    req.body;
 
   const addrecipe = await Recipe.create({
     blog_title,
     blog_description,
     blog_img,
     blog_time,
+    user_id,
   });
   res.json("OK");
 };
@@ -51,4 +53,10 @@ exports.UpdateRecipe = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+exports.Showrecipesbyuser = async (req, res) => {
+  const { user_id } = req.params;
+  const showrecipe = await Recipe.findAll({ where:{user_id} });
+  res.json(showrecipe);
 };
