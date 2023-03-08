@@ -2,15 +2,29 @@ import Card from "../components/card.component";
 import Footer from "../components/footer.component";
 import Navbar from "../components/navbar.component";
 import Popup from "../components/popup.component";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { TextField } from "@mui/material";
+import { ShowRecipeByUser, ShowRecipe } from "../axios/recipe.axios";
+
 const Feedpage = () => {
   const [isPopup, setIsPopup] = useState(false);
   const [recipe, setRecipe] = useState();
   const [searchText, setSearchText] = useState("");
+  const [recipes, setRecipes] = useState([]);
 
-  const { user } = useSelector((state) => ({ ...state }));
+  const {user} = useSelector((state) => ({...state }))
+
+
+  useEffect(() => {
+    ShowRecipe().then((response) => {
+      console.log(response);
+      setRecipes(response.data);
+      
+    });
+  }, []);
+
+  
 
   return (
     <>
@@ -43,13 +57,39 @@ const Feedpage = () => {
             margin: "1rem",
           }}
         />
-        <Card
-          setIsPopup={setIsPopup}
-          setRecipe={setRecipe}
-          text="No recipes to show"
-          searchText={searchText}
-        />
-
+        <div className="lg:grid lg:grid-rows-2 lg:grid-cols-3 lg:place-items-center mx-auto gap-0 my-5">
+          {recipes.length > 0 ? (
+            recipes
+              .filter((recipes) =>
+                recipes.blog_title
+                  .toLowerCase()
+                  .includes(searchText.toLowerCase())
+              )
+              .map((recipe) => {
+                return (
+                  <Card
+                    setIsPopup={setIsPopup}
+                    setRecipe={setRecipe}
+                    recipe={recipe}
+                    image={recipe.blog_img}
+                    title={recipe.blog_title}
+                    desc={recipe.blog_description}
+                    time={recipe.blog_time}
+                    username={user.username}
+                  />
+                );
+              })
+          ) : (
+            null
+          )}
+        </div>
+        {recipes.length === 0 && (
+          <>
+            <h1 className="text-2xl text-white flex flex-col items-center justify-center h-[40vh]">
+              No recipes to show
+            </h1>
+          </>
+        )}
         <Footer />
       </div>
     </>

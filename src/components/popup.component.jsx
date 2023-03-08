@@ -27,7 +27,7 @@ const Popup = ({ recipe, setIsPopup }) => {
     });
   };
 
-  const handlePopupClose = (e)=> {
+  const handlePopupClose = ()=> {
     setIsPopup(false)
   }
 
@@ -36,7 +36,7 @@ const Popup = ({ recipe, setIsPopup }) => {
       <div className="bg-white flex flex-col items-center justify-center rounded-lg p-5">
         <div className="w-full flex lg:justify-between items-center px-5">
           <h1 className="text-3xl py-5 lg:mr-0 mr-24">Update recipe</h1>
-          <button onClick={handlePopupClose}>
+          <button onClick={() => handlePopupClose()}>
             <img
               src="https://img.icons8.com/ios-glyphs/256/multiply.png"
               width="40px"

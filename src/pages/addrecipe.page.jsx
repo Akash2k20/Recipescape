@@ -58,7 +58,7 @@ const Addrecipe = () => {
             id="outlined-basic"
             label="Title"
             variant="filled"
-            fullWidth="true"
+            fullWidth= 'true'
             className="rounded-md  bg-[#F8F0E3]"
             onChange={(e) => setTitle(e.target.value)}
             required

@@ -6,34 +6,50 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import DeleteConfirmPopup from "../components/deletepopup.component";
 import { TextField } from "@mui/material";
+import { ShowRecipeByUser } from "../axios/recipe.axios";
 
 const Homepage = () => {
   const [isPopup, setIsPopup] = useState(false);
-  const [deletePopup, setDeletePopup] = useState(false)
+  const [deletePopup, setDeletePopup] = useState(false);
   const [recipe, setRecipe] = useState();
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState("");
+  const [recipes, setRecipes] = useState([]);
 
-  const { user } = useSelector((state) => ({ ...state }));
+  const user = useSelector((state) => state.user);
+
+  useEffect(() => {
+    ShowRecipeByUser(user.user_id).then((response) => {
+      setRecipes(response.data);
+    });
+  }, []);
 
   return (
     <>
-      {isPopup && <Popup recipe={recipe} setIsPopup={setIsPopup} />}
+    {isPopup && <Popup recipe={recipe} setIsPopup={setIsPopup} />}
       {deletePopup && (
         <DeleteConfirmPopup recipe={recipe} setDeletePopup={setDeletePopup} />
       )}
 
       <Navbar />
       <div className=" bg-gradient-to-r from-[#090D0C] via-[#0A1312] to-[#0E2020] min-h-screen lg:w-full min-w-screen flex flex-col justify-center items-center ">
-        <h1 className="text-white text-4xl pt-7">Welcome {user.displayName}</h1>
+        {user.username ? (
+          <h1 className="text-white text-4xl pt-7">Welcome {user.username}</h1>
+        ) : (
+          <h1 className="text-white text-4xl pt-7">
+            Welcome {user.displayName}
+          </h1>
+        )}
+
         <p className="text-white text-lg p-3">Your recipes</p>
         <TextField
           id="outlined-basic"
           label="Search"
-          onChange = {(e)=>{setSearchText(e.target.value)}}
+          onChange={(e) => {
+            setSearchText(e.target.value);
+          }}
           variant="filled"
           fullWidth="true"
           className="rounded-md  bg-[#F8F0E3]"
-    
           sx={{
             width: "23rem",
             "@media(min-width: 1024px)": {
@@ -43,13 +59,30 @@ const Homepage = () => {
             margin: "1rem",
           }}
         />
-        <Card
-          setIsPopup={setIsPopup}
-          setRecipe={setRecipe}
-          setDeletePopup={setDeletePopup}
-          text="Add recipes to show here"
-          searchText = {searchText}
-        />
+        <div className="lg:grid lg:grid-rows-2 lg:grid-cols-3 lg:place-items-center mx-auto gap-0 my-5">
+          {recipes.length > 0
+            ? recipes
+                .filter((recipes) =>
+                  recipes.blog_title
+                    .toLowerCase()
+                    .includes(searchText.toLowerCase())
+                )
+                .map((recipe) => {
+                  return (
+                    <Card
+                      setIsPopup={setIsPopup}
+                      setRecipe={setRecipe}
+                      recipe = {recipe}
+                      setDeletePopup={setDeletePopup}
+                      image={recipe.blog_img}
+                      title={recipe.blog_title}
+                      desc={recipe.blog_description}
+                      time={recipe.blog_time}
+                    />
+                  );
+                })
+            : null}
+        </div>
         <Footer />
       </div>
     </>
