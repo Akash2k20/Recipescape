@@ -1,7 +1,7 @@
 /* eslint-disable no-lone-blocks */
 import React, { useState, useEffect } from "react";
 import { DeleteRecipe, ShowRecipe, ShowRecipeByUser } from "../axios/recipe.axios";
-import { Button } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import { Image } from "cloudinary-react";
 import { useSelector } from "react-redux";
 
@@ -83,9 +83,8 @@ const Card = ({ setIsPopup, setRecipe,image,title,desc,time,setDeletePopup, reci
             sx={{
               marginTop: "1rem",
               paddingLeft: "0.75rem",
-              paddingRight: "0.75rem",
+              paddingRight: "0.75rem",  
               backgroundColor: "#ffffff",
-
               color: "#000000",
               borderColor: "#000000",
               "&:hover": {
@@ -96,6 +95,7 @@ const Card = ({ setIsPopup, setRecipe,image,title,desc,time,setDeletePopup, reci
           >
             🗑️ Delete Recipe
           </Button>
+          
         </div>
       </div>
     </>

@@ -32,7 +32,8 @@ const Addrecipe = () => {
           description,
           res.data.secure_url,
           time,
-          user.user_id
+          user.user_id,
+          user.username,
         ).then((res) => {
           toast.success("Recipe uploaded", { theme: "dark" });
           navigate("/homepg");
@@ -46,7 +47,8 @@ const Addrecipe = () => {
             description,
             res.data.secure_url,
             time,
-            resp.data.user_id
+            resp.data.user_id,
+            resp.data.username
           ).then((res) => {
             toast.success("Recipe uploaded", { theme: "dark" });
             navigate("/homepg");

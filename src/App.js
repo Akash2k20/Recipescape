@@ -11,6 +11,7 @@ import About from './pages/about.page';
 import { useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import SavedRecipes from './pages/savedrecipes.page';
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
             <Route exact path="/addrecipe" element={<Addrecipe />} />
             <Route exact path="/feed" element={<Feedpage />} />
             <Route exact path="/account" element={<Accountpage />} />
+            <Route exact path = "/savedrecipes" element= {<SavedRecipes/>}/>
             
           </>
         ) : (

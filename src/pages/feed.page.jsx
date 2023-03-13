@@ -6,21 +6,22 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { TextField } from "@mui/material";
 import { ShowRecipeByUser, ShowRecipe } from "../axios/recipe.axios";
+import { GetUser } from "../axios/user.axios";
 
 const Feedpage = () => {
   const [isPopup, setIsPopup] = useState(false);
   const [recipe, setRecipe] = useState();
   const [searchText, setSearchText] = useState("");
   const [recipes, setRecipes] = useState([]);
+  // const [username, setUsername] = useState("");
 
   const {user} = useSelector((state) => ({...state }))
 
 
   useEffect(() => {
-    ShowRecipe().then((response) => {
+    ShowRecipe().then(async(response) => {
       console.log(response);
       setRecipes(response.data);
-      
     });
   }, []);
 
@@ -75,7 +76,7 @@ const Feedpage = () => {
                     title={recipe.blog_title}
                     desc={recipe.blog_description}
                     time={recipe.blog_time}
-                    username={user.username}
+                    username={recipe.username}
                   />
                 );
               })

@@ -15,6 +15,7 @@ const Homepage = () => {
   const [recipe, setRecipe] = useState();
   const [searchText, setSearchText] = useState("");
   const [recipes, setRecipes] = useState([]);
+  // const [username, setUsername] = useState("");
 
   const user = useSelector((state) => state.user);
 
@@ -22,10 +23,12 @@ const Homepage = () => {
     if (user.user_id) {
       ShowRecipeByUser(user.user_id).then(async (response) => {
         setRecipes(response.data);
+
       });
     } else {
       GetUser(user.email).then((resp) => {
         console.log(resp);
+        // setUsername(resp.data.username);
         ShowRecipeByUser(resp.data.user_id).then((responsee) => {
           setRecipes(responsee.data);
         });
@@ -88,6 +91,7 @@ const Homepage = () => {
                       title={recipe.blog_title}
                       desc={recipe.blog_description}
                       time={recipe.blog_time}
+                      username = {recipe.username}
                     />
                   );
                 })
