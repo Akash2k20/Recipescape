@@ -3,7 +3,7 @@ const { where } = require("sequelize");
 const { Recipe } = require("../database/database");
 
 exports.Addrecipe = async (req, res) => {
-  const { blog_title, blog_description, blog_img, blog_time, user_id } =
+  const { blog_title, blog_description, blog_img, blog_time, user_id, username } =
     req.body;
 
   const addrecipe = await Recipe.create({
@@ -12,6 +12,7 @@ exports.Addrecipe = async (req, res) => {
     blog_img,
     blog_time,
     user_id,
+    username
   });
   res.json("OK");
 };
