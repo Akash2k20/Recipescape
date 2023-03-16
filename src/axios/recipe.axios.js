@@ -2,17 +2,14 @@ import axios from "axios";
 
 export const AddRecipe = async (title, description, image, time, user_id, username) => {
   console.log(user_id);
-  return await axios.post(
-    "https://recipescape-server.onrender.com/addrecipe",
-    {
-      blog_title: title,
-      blog_description: description,
-      blog_img: image,
-      blog_time: time,
-      user_id,
-      username,
-    }
-  );
+  return await axios.post("https://recipescape-server.onrender.com/addrecipe", {
+    blog_title: title,
+    blog_description: description,
+    blog_img: image,
+    blog_time: time,
+    user_id: user_id,
+    username: username,
+  });
 };
 
 export const ShowRecipe = async () => {

@@ -16,7 +16,6 @@ const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
-  const [err, setErr] = useState("");
 
   const dispatch = useDispatch();
   const handleSubmit = async (e) => {
@@ -38,7 +37,9 @@ const Login = () => {
       });
     } catch (error) {
       console.log(error);
-      setErr(error.code);
+      toast.error("Please sign-up before continuing", {theme: "dark"})
+      navigate('/signup');
+    
     }
   };
 
@@ -51,7 +52,8 @@ const Login = () => {
           // console.log(typeof resp.data);
           // console.log(resp.data);
           if(resp.data === null ){
-            navigate('/signup')
+            // toast.warning("No user found. Please signup", {theme: "dark"})
+            // navigate('/signup')
           }
           else{
             dispatch({
@@ -82,7 +84,7 @@ const Login = () => {
         <h1 className="text-4xl py-3 my-0.5  text-black font-semibold">
           Login
         </h1>
-        <p className="text-black my-1 ">{err}</p>
+        {/* <p className="text-black my-1 ">{err}</p> */}
 
         <form
           action="submit"

@@ -1,9 +1,9 @@
 FROM node:alpine
 WORKDIR /app
-ENV PATH /app/node_modules/.bin:$PATH
-COPY package.json ./
-COPY package-lock.json ./
-RUN npm install --silent
-RUN npm install react-scripts@5.0.1 -g --silent
-COPY . ./
-CMD ["npm", "start"]
+COPY package.json .
+RUN npm i
+COPY . .
+RUN npm run build
+RUN npm i -g serve
+EXPOSE 3000
+CMD ["serve","-s","build"]

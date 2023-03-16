@@ -23,23 +23,41 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await createUserWithEmailAndPassword(auth, email, pass).then(
-        async (res) => {
-          await CreateUser(email, username, prof).then(() => {
-            setEmail("");
-            setUsername("");
-            setProf("");
-          });
-           dispatch({
-             type: "CREATE_USER",
-             payload: res.data,
-           });
-          navigate("/homepg");
-        }
-      );
+      // console.log(username.length);
+      // console.log(pass.length);
+      if (username.length >= 4 && pass.length >= 6) {
+       toast.info("Please wait. You're being logged in", {theme: "dark"})
+        await createUserWithEmailAndPassword(auth, email, pass).then(
+          async (res) => {
+            console.log(res);
+            await CreateUser(email, username, prof).then(async (resp) => {
+              await GetUser(email).then((res)=> {
+                dispatch({
+                  type: "CREATE_USER",
+                  payload: res.data,
+                });
+                setEmail("");
+                setUsername("");
+                setProf("");
+                navigate('/homepg');
+
+              })
+            });
+          }
+        );
+      } else {
+        toast.error("Make sure username is more than 4 characters and password is 6 characters", {
+          theme: "dark",
+        });
+        
+      }
     } catch (err) {
-      setErr(err);
-      console.log(err);
+      console.log(err.toString());
+      if(err.toString().includes('email')){
+        toast.error("Enter a valid email")
+      }else{
+        toast.error("We encountered a problem. Please try again later")
+      }
     }
   };
 
@@ -49,7 +67,9 @@ const Signup = () => {
       await signInWithPopup(auth, googleAuthProvider).then(async (res) => {
         await GetUser(res.user.email).then(async (resp) => {
           if (resp.data) {
-            toast.error("User exists. Please login using this account", {theme: "dark"});
+            toast.error("User exists. Please login using this account", {
+              theme: "dark",
+            });
           } else {
             await CreateUser(res.user.email, res.user.displayName, prof);
             console.log(res);
@@ -68,7 +88,7 @@ const Signup = () => {
 
   return (
     <div className="bg-gradient-to-r from-[#090D0C] via-[#0A1312] to-[#0E2020] min-h-screen lg:flex lg:items-center lg:justify-center flex flex-col justify-center items-center">
-      <div className="flex flex-col items-center justify-center p-8  bg-[#f6f6f6] lg:w-[30%] w-[85%] rounded-lg">
+      <div className="flex flex-col items-center justify-center p-8 lg:px-16 bg-[#f6f6f6] lg:w-fit w-[85%] rounded-lg">
         <h1 className="text-4xl py-3 my-1 text-black font-semibold">Sign-up</h1>
         {/* <p className="text-black my-1">{err}</p> */}
         <form action="" className="flex flex-col items-center justify-center">
@@ -98,6 +118,7 @@ const Signup = () => {
           <TextField
             id="filled-basic"
             label="E-mail"
+            type="email"
             variant="filled"
             className="rounded-md bg-slate-300"
             onChange={(e) => {
